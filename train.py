@@ -31,7 +31,7 @@ def evaluate(model, data):
             mask = data.test_mask
         loss = F.nll_loss(output[mask], data.labels[mask]).item()
         pred = output[mask].max(dim=1)[1]
-        acc = pred.eq(data.labels[mask]).sum().item() / mask.sum().item()
+        acc = pred.eq(data.labels[mask]).sum().item() / mask.int().sum().item()
 
         outputs['{}_loss'.format(key)] = loss
         outputs['{}_acc'.format(key)] = acc

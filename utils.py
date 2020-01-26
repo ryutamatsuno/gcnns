@@ -14,7 +14,7 @@ def get_degree(edge_list):
     return deg
 
 
-def normalize_adj(edge_list):
+def normalize_adj(edge_list: torch.Tensor) -> torch.Tensor:
     deg = get_degree(edge_list)
     row, col = edge_list
     deg_inv_sqrt = torch.pow(deg.to(torch.float), -0.5)
