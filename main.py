@@ -9,8 +9,17 @@ from train import run
 from utils import preprocess_features
 
 
+import argparse
+
 if __name__ == '__main__':
-    data = load_data('cora')
+
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--dataset', type=str, default='small')
+
+    args = parser.parse_args()
+
+
+    data = load_data(args.dataset)
     data.features = preprocess_features(data.features)
-    model, optimizer = create_gcn_model(data)
-    run(data, model, optimizer, verbose=True, niter=10)
+    model, optimizer = create_gcn_model(data, weight_decay=0)
+    run(data, model, optimizer, verbose=True, niter=10, patience=10)

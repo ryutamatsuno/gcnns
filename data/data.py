@@ -175,8 +175,8 @@ class Data(object):
     def A(self):
         return self.adj
 
-def load_small() -> Data:
-    top_dir = "./data/small"
+def load(name) -> Data:
+    top_dir = "./data/" + name
     labels = np.loadtxt(top_dir + '/labels.csv', dtype=np.int, delimiter=",")
     features = np.loadtxt(top_dir + '/features.csv', dtype=np.float, delimiter=",")
     edge_list = np.loadtxt(top_dir + '/edge_list.edg', dtype=np.int,delimiter=",")
@@ -193,19 +193,16 @@ def load_small() -> Data:
     tests_mask = torch.tensor(tests_mask, dtype=torch.bool)
     adj = edglist2adj(edge_list)
 
-    A = adj.to_dense()
-    print(A.shape)
-
-
     data = Data(adj,edge_list,features,labels,train_mask,valid_mask,tests_mask)
     return data
+
 
 
 def load_data(dataset_str: str, seed=None) -> Data:
     if dataset_str in ['cora', 'citeseer', 'pubmed']:
         data = load_planetoid_data(dataset_str)
-    elif dataset_str == 'small':
-        return load_small()
+    elif dataset_str in ['small', 'giant_cora', 'giant_citeseer']:
+        return load(dataset_str)
     else:
         data = load_npz_data(dataset_str, seed)
     return data
@@ -289,9 +286,9 @@ def load_planetoid_data(dataset_str):
     labels[test_idx] = labels[sorted_test_idx]
 
     edge_list = adj_list_from_dict(graph)
-    #edge_list = add_self_loops(edge_list, features.size(0))
-    #adj = normalize_adj(edge_list)
-    adj = edglist2adj(edge_list)
+    edge_list = add_self_loops(edge_list, features.size(0))
+    adj = normalize_adj(edge_list)
+    #adj = edglist2adj(edge_list)
 
     train_mask = index_to_mask(train_idx, labels.shape[0])
     val_mask = index_to_mask(val_idx, labels.shape[0])

@@ -131,9 +131,8 @@ def run(data, model, optimizer, epochs=200, niter=100, early_stopping=True, pati
 
         val_acc_list.append(evals['val_acc'])
         test_acc_list.append(evals['test_acc'])
-
-    print(mean(test_acc_list))
-    print(std(test_acc_list))
+    print(test_acc_list)
+    print(mean(test_acc_list), "+-", std(test_acc_list))
     return {
         'val_acc': mean(val_acc_list),
         'test_acc': mean(test_acc_list),
