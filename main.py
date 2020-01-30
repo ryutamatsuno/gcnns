@@ -15,11 +15,19 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--dataset', type=str, default='small')
+    parser.add_argument('--model', type=str, default='sgc')
+    parser.add_argument('--niter', type=int, default=10)
 
     args = parser.parse_args()
 
 
     data = load_data(args.dataset)
     data.features = preprocess_features(data.features)
-    model, optimizer = create_gcn_model(data, weight_decay=0)
-    run(data, model, optimizer, verbose=True, niter=10, patience=10)
+
+    if args.model == 'sgc':
+        model, optimizer = create_sgc_model(data)
+    elif args.model == 'gcn':
+        model, optimizer = create_gcn_model(data)
+    else:
+        raise ValueError(args.model)
+    run(data, model, optimizer, verbose=False, niter=args.niter, patience=10)
