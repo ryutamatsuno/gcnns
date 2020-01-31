@@ -31,7 +31,7 @@ class GAT(nn.Module):
         self.out_att.reset_parameters()
 
     def forward(self, data):
-        x, edge = data.features, data.edge_list
+        x, edge = data.features, data.norm_edge_list
         x = torch.cat([att(x, edge) for att in self.attentions], dim=1)
         x = self.out_att(x, edge)
         return F.log_softmax(x, dim=1)

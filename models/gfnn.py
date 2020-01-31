@@ -14,7 +14,7 @@ class GFNN(nn.Module):
         self.prelu = nn.PReLU()
         processed_x = data.features.clone()
         for _ in range(K):
-            processed_x = torch.spmm(data.adj, processed_x)
+            processed_x = torch.spmm(data.norm_adj, processed_x)
         self.processed_x = processed_x
 
     def reset_parameters(self):

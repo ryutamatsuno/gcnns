@@ -48,8 +48,8 @@ class MaskedGCNConv(Module):
         self.in_features = in_features
         self.out_features = out_features
         self.fc = nn.Linear(in_features, out_features, bias=bias)
-        self.degree = get_degree(data.edge_list).float()
-        self.dense_adj = data.adj.to_dense().to(device)
+        self.degree = get_degree(data.norm_edge_list).float()
+        self.dense_adj = data.norm_adj.to_dense().to(device)
         self.sigma = Parameter(torch.Tensor(in_features))
         self.reset_parameters()
 
@@ -60,10 +60,10 @@ class MaskedGCNConv(Module):
         self.sigma.data.fill_(1)
 
     def forward(self, x, data):
-        mask = make_mask(x, data.edge_list, self.dense_adj, self.sigma, self.degree)
+        mask = make_mask(x, data.norm_edge_list, self.dense_adj, self.sigma, self.degree)
         x = mask * x
         x = self.fc(x)
-        x = torch.spmm(data.adj, x)
+        x = torch.spmm(data.norm_adj, x)
         return x
 
 

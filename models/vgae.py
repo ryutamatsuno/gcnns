@@ -25,7 +25,7 @@ class VGAE(nn.Module):
             return mu
 
     def forward(self, data):
-        x, adj = data.features, data.adj
+        x, adj = data.features, data.norm_adj
         x = F.dropout(x, p=self.dropout, training=self.training)
         hid1 = self.gc1(x, adj)
         hid1 = F.dropout(hid1, p=self.dropout, training=self.training)

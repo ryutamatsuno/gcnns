@@ -1,4 +1,4 @@
-from data.data import load_data
+from Data import Data
 from models.gcn import create_gcn_model
 from models.gat import create_gat_model
 from models.sgc import create_sgc_model
@@ -21,11 +21,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
-    data = load_data(args.dataset)
+    data = Data.load(args.dataset) #load_data(args.dataset)
+    data.update_mask(0)
     data.features = preprocess_features(data.features)
 
     if args.model == 'sgc':
-        model, optimizer = create_sgc_model(data)
+        model, optimizer = create_sgc_model(data,lr = 0.5, K=2)
     elif args.model == 'gcn':
         model, optimizer = create_gcn_model(data)
     else:

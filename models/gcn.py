@@ -19,7 +19,7 @@ class GCN(nn.Module):
 
     def forward(self, data):
         x = data.features
-        adj = data.adj
+        adj = data.norm_adj
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = F.relu(self.gc1(x, adj))
         x = F.dropout(x, p=self.dropout, training=self.training)

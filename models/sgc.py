@@ -9,7 +9,7 @@ class SGC(nn.Module):
         super(SGC, self).__init__()
         nfeat, nclass = data.num_features, data.num_classes
         x = data.features
-        adj = data.adj
+        adj = data.norm_adj
         self.fc = nn.Linear(nfeat, nclass)
         processed_x = x.clone()
         for _ in range(K):
@@ -24,7 +24,7 @@ class SGC(nn.Module):
         return F.log_softmax(x, dim=1)
 
 
-def create_sgc_model(data, lr=0.2, weight_decay=3e-5):
-    model = SGC(data)
+def create_sgc_model(data, lr=0.2, weight_decay=3e-5, K=2):
+    model = SGC(data, K = K)
     optimizer = Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     return model, optimizer

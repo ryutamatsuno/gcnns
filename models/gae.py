@@ -17,7 +17,7 @@ class GAE(nn.Module):
         self.gc2.reset_parameters()
 
     def forward(self, data):
-        x, adj = data.features, data.adj
+        x, adj = data.features, data.norm_adj
         x = F.dropout(x, p=self.dropout, training=self.training)
         x = self.gc1(x, adj)
         x = F.dropout(x, p=self.dropout, training=self.training)
