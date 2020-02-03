@@ -98,7 +98,8 @@ def run(data, model, optimizer, epochs=200, niter=100, early_stopping=True, pati
     val_acc_list = []
     test_acc_list = []
 
-    for _ in tqdm(range(niter)):
+    for i in tqdm(range(niter)):
+        data.update_mask(i)
         model.to(device).reset_parameters()
         if torch.cuda.is_available():
             torch.cuda.synchronize()

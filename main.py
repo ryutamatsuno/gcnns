@@ -26,7 +26,7 @@ if __name__ == '__main__':
     data.features = preprocess_features(data.features)
 
     if args.model == 'sgc':
-        model, optimizer = create_sgc_model(data,lr = 0.5, K=2)
+        model, optimizer = create_sgc_model(data,lr = 0.2, K=2)
     elif args.model == 'gcn':
         model, optimizer = create_gcn_model(data)
     else:

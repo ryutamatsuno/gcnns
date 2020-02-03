@@ -470,7 +470,7 @@ def split_data(labels, n_train_per_class, n_val, seed):
     train_idx = np.array([], dtype=np.int64)
     remains = np.array([], dtype=np.int64)
     for c in range(n_class):
-        candidate = torch.nonzero(labels == c).T.numpy()[0]
+        candidate = torch.nonzero(labels == c).t().numpy()[0]
         np.random.shuffle(candidate)
         train_idx = np.concatenate([train_idx, candidate[:n_train_per_class]])
         remains = np.concatenate([remains, candidate[n_train_per_class:]])
